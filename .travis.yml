@@ -1,0 +1,9 @@
+language: jvm
+install: skip
+
+os: linux
+dist: bionic
+jdk: openjdk11
+
+script:
+  - ./gradlew clean buildPlugin --scan -s
