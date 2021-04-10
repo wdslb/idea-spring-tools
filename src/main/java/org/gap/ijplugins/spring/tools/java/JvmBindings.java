@@ -25,7 +25,13 @@
 package org.gap.ijplugins.spring.tools.java;
 
 import com.intellij.lang.jvm.types.JvmType;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiArrayType;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiClassType;
+import com.intellij.psi.PsiField;
+import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiPrimitiveType;
+import com.intellij.psi.PsiWildcardType;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;

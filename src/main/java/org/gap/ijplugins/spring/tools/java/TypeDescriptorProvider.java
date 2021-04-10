@@ -35,8 +35,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class TypeDescriptorProvider {
-    public List<TypeDescriptorData> descriptors(PsiClass[] clazzs) {
-        return ApplicationUtil.tryRunReadAction(() -> Arrays.stream(clazzs).map(this::map).collect(Collectors.toList()));
+    public List<TypeDescriptorData> descriptors(PsiClass[] classArr) {
+        return ApplicationUtil.tryRunReadAction(() -> Arrays.stream(classArr).map(this::map).collect(Collectors.toList()));
     }
 
     private TypeDescriptorData map(PsiClass psiClass) {
