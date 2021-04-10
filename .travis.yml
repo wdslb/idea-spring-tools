@@ -18,8 +18,7 @@ script:
 deploy:
   provider: releases
   skip_cleanup: true
-  api_key:
-    secure: "$GITHUB_OAUTH_TOKEN"
+  api_key: "$GITHUB_OAUTH_TOKEN"
   file:
     - "build/distributions/*.zip"
     - "build/distributions/updatePlugins.xml"
