@@ -3,11 +3,11 @@ import org.jetbrains.intellij.tasks.PrepareSandboxTask
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.io.ByteArrayOutputStream
+import java.nio.charset.StandardCharsets
 
 plugins {
-    id("org.jetbrains.intellij") version "0.4.16"
-    kotlin("jvm") version "1.3.61"
-    id("com.jfrog.bintray") version "1.8.4"
+    kotlin("jvm") version "1.4.10"
+    id("org.jetbrains.intellij") version "0.7.2"
     id("net.researchgate.release") version "2.8.1"
 }
 
@@ -18,10 +18,11 @@ if(version.toString().endsWith("SNAPSHOT")) {
 }
 
 repositories {
-    mavenCentral()
+    maven ("https://repo.huaweicloud.com/repository/maven")
+    // mavenCentral()
 //    mavenLocal()
     maven ("https://jitpack.io")
-    maven ("https://dl.bintray.com/gayanper/maven")
+    // maven ("https://dl.bintray.com/gayanper/maven")
     maven ("https://repo.spring.io/libs-snapshot/")
 }
 
@@ -29,23 +30,31 @@ val languageServer by configurations.creating
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
+    implementation("com.github.ballerina-platform:lsp4intellij:master-SNAPSHOT")
     //implementation("com.github.ballerina-platform:lsp4intellij:0.94.2")
-    implementation("com.github.ballerina-platform:lsp4intellij:0.94.1-20201108.10.09.08.085")
+    //implementation("com.github.ballerina-platform:lsp4intellij:0.94.1-20201108.10.09.08.085")
 
-    implementation("org.springframework.ide.vscode:commons-java:1.22.0-SNAPSHOT")
-    languageServer("org.springframework.ide.vscode:spring-boot-language-server:1.22.0-SNAPSHOT:exec") {
+    implementation("org.springframework.ide.vscode:commons-java:1.26.0-SNAPSHOT")
+    languageServer("org.springframework.ide.vscode:spring-boot-language-server:1.26.0-SNAPSHOT:exec") {
         isTransitive = false
     }
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version = "2020.1"
+    version = "IC-2020.3"
     pluginName = "idea-spring-tools"
     setPlugins("IntelliLang", "java")
+    jreRepo = "https://jetbrains.bintray.com/intellij-jbr"
+    downloadSources = false
 }
 
 tasks {
+    compileJava {
+        sourceCompatibility = "11"
+        targetCompatibility = "11"
+        options.encoding = StandardCharsets.UTF_8.name()
+    }
     compileKotlin {
         kotlinOptions.jvmTarget = "1.8"
     }
@@ -53,9 +62,14 @@ tasks {
         kotlinOptions.jvmTarget = "1.8"
     }
 }
+
+tasks.buildSearchableOptions {
+    enabled = false
+}
+
 tasks.getByName<PatchPluginXmlTask>("patchPluginXml") {
-    setUntilBuild("213.*")
-    setSinceBuild("193.*")
+    setUntilBuild("211.*")
+    setSinceBuild("191.*")
 }
 
 tasks.getByName<PrepareSandboxTask>("prepareSandbox").doLast {
@@ -69,57 +83,15 @@ tasks.getByName<PrepareSandboxTask>("prepareSandbox").doLast {
     }
 }
 
-bintray {
-    user = System.getenv("BINTRAY_USER")
-    key = System.getenv("BINTRAY_API_KEY")
-    publish = true
-    override = true
-    pkg(delegateClosureOf<com.jfrog.bintray.gradle.BintrayExtension.PackageConfig> {
-        repo = "idea-spring-tools"
-        name = intellij.pluginName
-        setLicenses("Apache-2.0")
-        userOrg = System.getenv("BINTRAY_USER")
-        vcsUrl = "https://github.com/gayanper/idea-spring-tools"
-        version(delegateClosureOf<com.jfrog.bintray.gradle.BintrayExtension.VersionConfig> {
-            name = version.toString()
-        })
-
-        filesSpec(delegateClosureOf<com.jfrog.bintray.gradle.tasks.RecordingCopyTask> {
-            from("build/distributions")
-            into(".")
-        })
-
-    })
-}
-
 
 tasks {
-    bintrayUpload {
-        doFirst() {
-            val bout: ByteArrayOutputStream = ByteArrayOutputStream()
-            exec {
-                commandLine = ("curl -s -o /dev/null -w %{http_code} " +
-                        "-u ${System.getenv("BINTRAY_USER")}:${System.getenv("BINTRAY_API_KEY")} " +
-                        "-X DELETE https://api.bintray.com/content/${System.getenv("BINTRAY_USER")}/${intellij.pluginName}/updatePlugins.xml").split(" ")
-                standardOutput = bout
-            }
-            val result = String(bout.toByteArray())
-
-            if(result != "404" && result != "200") {
-                throw GradleException(String.format("Couldn't delete the updatePlugins.xml, result was %s", result))
-            }
-        }
-    }
-
-
     buildPlugin {
         doLast() {
             val content = """
                 <?xml version="1.0" encoding="UTF-8"?>
                 <plugins>
-                    <plugin id="org.gap.ijplugins.spring.idea-spring-tools" url="https://dl.bintray.com/gayanper/idea-spring-tools/${intellij.pluginName}-${version}.zip"
-                        version="${version}">
-                        <idea-version since-build="183.2940.10" until-build="213.*" />
+                    <plugin id="org.gap.ijplugins.spring.idea-spring-tools" version="${archiveVersion}">
+                        <idea-version since-build="191.8026.42" until-build="213.*" />
                     </plugin>
                 </plugins>                
                 
