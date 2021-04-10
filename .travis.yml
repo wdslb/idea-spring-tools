@@ -6,4 +6,4 @@ dist: bionic
 jdk: openjdk11
 
 script:
-  - ./gradlew clean buildPlugin --scan -s
+  - ./gradlew clean buildPlugin
