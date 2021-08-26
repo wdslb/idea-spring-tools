@@ -22,6 +22,7 @@ branches:
 
 before_deploy:
   - git config --local user.name "wdslb"
+  - git config --local user.email "webmaster@wdslb.com"
   - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
   - git tag $TRAVIS_TAG
 
@@ -34,4 +35,4 @@ deploy:
   on:
     repo: wdslb/idea-spring-tools
     tags: true
-    all_branches: true
+  overwrite: true
