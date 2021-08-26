@@ -15,11 +15,6 @@ jdk: openjdk11
 script:
   - ./gradlew clean buildPlugin
 
-branches:
-  only:
-    - master
-    - /\d+\.\d+(\.\d+)?(\-.+)?/
-
 before_deploy:
   - git config --local user.name "wdslb"
   - git config --local user.email "webmaster@wdslb.com"
