@@ -6,8 +6,8 @@ import java.io.ByteArrayOutputStream
 import java.nio.charset.StandardCharsets
 
 plugins {
-    kotlin("jvm") version "1.4.10"
-    id("org.jetbrains.intellij") version "0.7.2"
+    kotlin("jvm") version "1.4.32"
+    id("org.jetbrains.intellij") version "1.0"
     id("net.researchgate.release") version "2.8.1"
 }
 
@@ -18,7 +18,8 @@ if(version.toString().endsWith("SNAPSHOT")) {
 }
 
 repositories {
-    maven ("https://repo.huaweicloud.com/repository/maven")
+    maven ("https://repo.huaweicloud.com/repository/maven" )
+    maven ("http://mirrors.cloud.tencent.com/nexus/repository/maven-public/")
     mavenCentral()
 //    mavenLocal()
     maven ("https://jitpack.io")
@@ -42,11 +43,11 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version = "IC-2020.3"
-    pluginName = "idea-spring-tools"
-    setPlugins("IntelliLang", "java")
-    jreRepo = "https://jetbrains.bintray.com/intellij-jbr"
-    downloadSources = false
+    version.set("IC-2020.3")
+    pluginName.set("idea-spring-tools")
+    downloadSources.set(false)
+    updateSinceUntilBuild.set(true)
+    plugins.set("IntelliLang,java".split(','))
 }
 
 tasks {
@@ -68,12 +69,12 @@ tasks.buildSearchableOptions {
 }
 
 tasks.getByName<PatchPluginXmlTask>("patchPluginXml") {
-    setUntilBuild("211.*")
-    setSinceBuild("191.*")
+    sinceBuild.set("191.*")
+    untilBuild.set("212.*")
 }
 
 tasks.getByName<PrepareSandboxTask>("prepareSandbox").doLast {
-    val pluginServerDir = "${intellij.sandboxDirectory}/plugins/${intellij.pluginName}/lib/server"
+    val pluginServerDir = "${intellij.sandboxDir}/plugins/${intellij.pluginName}/lib/server"
 
     mkdir(pluginServerDir)
     copy {
@@ -110,13 +111,6 @@ release {
 }
 
 tasks {
-    afterReleaseBuild {
-        dependsOn("publishPlugin")
-    }
-
-    publishPlugin {
-        setToken(System.getenv("JB_API_KEY"))
-    }
 
     runIde {
         setJvmArgs(listOf("-Dsts4.jvmargs=-Xmx512m -Xms512m"))
