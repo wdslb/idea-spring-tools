@@ -34,8 +34,8 @@ dependencies {
     //implementation("com.github.ballerina-platform:lsp4intellij:0.94.2")
     //implementation("com.github.ballerina-platform:lsp4intellij:0.94.1-20201108.10.09.08.085")
 
-    implementation("org.springframework.ide.vscode:commons-java:1.26.0-SNAPSHOT")
-    languageServer("org.springframework.ide.vscode:spring-boot-language-server:1.26.0-SNAPSHOT:exec") {
+    implementation("org.springframework.ide.vscode:commons-java:1.28.0-SNAPSHOT")
+    languageServer("org.springframework.ide.vscode:spring-boot-language-server:1.28.0-SNAPSHOT:exec") {
         isTransitive = false
     }
 }
