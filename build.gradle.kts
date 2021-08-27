@@ -1,8 +1,5 @@
 import org.jetbrains.intellij.tasks.PatchPluginXmlTask
 import org.jetbrains.intellij.tasks.PrepareSandboxTask
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.io.ByteArrayOutputStream
 import java.nio.charset.StandardCharsets
 
 plugins {
@@ -12,10 +9,6 @@ plugins {
 }
 
 group = "org.gap.ijplugins.spring.ideaspringtools"
-
-if(version.toString().endsWith("SNAPSHOT")) {
-    version = version.toString().replace("SNAPSHOT", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd.HH.mm.ss.SSS")))
-}
 
 repositories {
     mavenCentral()
@@ -57,10 +50,10 @@ tasks {
         options.encoding = StandardCharsets.UTF_8.name()
     }
     compileKotlin {
-        kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.jvmTarget = "11"
     }
     compileTestKotlin {
-        kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.jvmTarget = "11"
     }
 }
 
@@ -91,8 +84,8 @@ tasks {
             val content = """
                 <?xml version="1.0" encoding="UTF-8"?>
                 <plugins>
-                    <plugin id="org.gap.ijplugins.spring.idea-spring-tools" version="${archiveVersion}">
-                        <idea-version since-build="191.8026.42" until-build="213.*" />
+                    <plugin id="org.gap.ijplugins.spring.idea-spring-tools" version="$archiveVersion">
+                        <idea-version since-build="191.8026.42" until-build="212.*" />
                     </plugin>
                 </plugins>                
                 

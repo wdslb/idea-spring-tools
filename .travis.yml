@@ -13,7 +13,13 @@ dist: bionic
 jdk: openjdk11
 
 script:
-  - ./gradlew clean buildPlugin
+  - chmod +x ./gradlew
+  - ./gradlew clean buildPlugin --build-cache
+
+branches:
+  only:
+    - master
+    - /\d+\.\d+(\.\d+)?(\-.+)?/
 
 before_deploy:
   - git config --local user.name "wdslb"

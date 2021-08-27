@@ -6,6 +6,8 @@ name: Gradle Package
 on:
   push:
     branches: [ master ]
+    tags:
+      - "*.*.*"
   release:
     types: [created]
 
@@ -46,6 +48,12 @@ jobs:
 
     - name: Build with Gradle
       run: ./gradlew clean buildPlugin --build-cache
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: build/distributions/*
 
     # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
     # the publishing section of your build.gradle
