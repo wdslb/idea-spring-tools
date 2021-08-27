@@ -18,9 +18,9 @@ if(version.toString().endsWith("SNAPSHOT")) {
 }
 
 repositories {
+    mavenCentral()
     maven ("https://repo.huaweicloud.com/repository/maven" )
     maven ("http://mirrors.cloud.tencent.com/nexus/repository/maven-public/")
-    mavenCentral()
 //    mavenLocal()
     maven ("https://jitpack.io")
     // maven ("https://dl.bintray.com/gayanper/maven")
