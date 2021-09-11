@@ -1,6 +1,7 @@
 import org.jetbrains.intellij.tasks.PatchPluginXmlTask
 import org.jetbrains.intellij.tasks.PrepareSandboxTask
 import java.nio.charset.StandardCharsets
+import java.nio.file.FileSystems
 
 plugins {
     kotlin("jvm") version "1.4.32"
@@ -40,7 +41,7 @@ intellij {
     pluginName.set("idea-spring-tools")
     downloadSources.set(false)
     updateSinceUntilBuild.set(true)
-    plugins.set("IntelliLang,java".split(','))
+    plugins.set(listOf("IntelliLang","java"))
 }
 
 tasks {
@@ -67,7 +68,15 @@ tasks.getByName<PatchPluginXmlTask>("patchPluginXml") {
 }
 
 tasks.getByName<PrepareSandboxTask>("prepareSandbox").doLast {
-    val pluginServerDir = "${intellij.sandboxDir}/plugins/${intellij.pluginName}/lib/server"
+    val pluginServerDir = intellij.sandboxDir.get() +
+            FileSystems.getDefault().separator +
+            "plugins" +
+            FileSystems.getDefault().separator +
+            intellij.pluginName.get() +
+            FileSystems.getDefault().separator +
+            "lib" +
+            FileSystems.getDefault().separator +
+            "server"
 
     mkdir(pluginServerDir)
     copy {
