@@ -53,7 +53,8 @@ jobs:
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
-        files: build/distributions/*
+        files: build/distributions/*.zip
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
     # the publishing section of your build.gradle
