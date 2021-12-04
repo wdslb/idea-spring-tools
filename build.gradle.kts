@@ -29,8 +29,8 @@ dependencies {
     //implementation("com.github.ballerina-platform:lsp4intellij:0.94.2")
     //implementation("com.github.ballerina-platform:lsp4intellij:0.94.1-20201108.10.09.08.085")
 
-    implementation("org.springframework.ide.vscode:commons-java:1.28.0-SNAPSHOT")
-    languageServer("org.springframework.ide.vscode:spring-boot-language-server:1.28.0-SNAPSHOT:exec") {
+    implementation("org.springframework.ide.vscode:commons-java:1.29.0-SNAPSHOT")
+    languageServer("org.springframework.ide.vscode:spring-boot-language-server:1.29.0-SNAPSHOT:exec") {
         isTransitive = false
     }
 }
@@ -64,7 +64,7 @@ tasks.buildSearchableOptions {
 
 tasks.getByName<PatchPluginXmlTask>("patchPluginXml") {
     sinceBuild.set("191.*")
-    untilBuild.set("212.*")
+    untilBuild.set("213.*")
 }
 
 tasks.getByName<PrepareSandboxTask>("prepareSandbox").doLast {
@@ -94,7 +94,7 @@ tasks {
                 <?xml version="1.0" encoding="UTF-8"?>
                 <plugins>
                     <plugin id="org.gap.ijplugins.spring.idea-spring-tools" version="$archiveVersion">
-                        <idea-version since-build="191.8026.42" until-build="212.*" />
+                        <idea-version since-build="191.8026.42" until-build="213.*" />
                     </plugin>
                 </plugins>                
                 
