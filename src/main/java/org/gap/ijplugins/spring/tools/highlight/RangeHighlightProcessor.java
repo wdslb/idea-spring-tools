@@ -33,6 +33,7 @@ import com.intellij.openapi.editor.markup.HighlighterLayer;
 import com.intellij.openapi.editor.markup.HighlighterTargetArea;
 import com.intellij.openapi.editor.markup.RangeHighlighter;
 import com.intellij.openapi.editor.markup.TextAttributes;
+import com.intellij.ui.JBColor;
 import org.eclipse.lsp4j.CodeLens;
 import org.eclipse.lsp4j.Range;
 import org.gap.ijplugins.spring.tools.SpringBootGutterIconRenderer;
@@ -42,8 +43,8 @@ import java.util.Collection;
 
 public class RangeHighlightProcessor implements HighlightProcessor {
 
-    private Multimap<String, RangeHighlighter> ranges = ArrayListMultimap.create();
-    private final static Color SPRING_BOOT_HINT_COLOR = new Color(0x32, 0xBA, 0x56);
+    private final Multimap<String, RangeHighlighter> ranges = ArrayListMultimap.create();
+    private final static Color SPRING_BOOT_HINT_COLOR = new JBColor(new Color(0x32, 0xBA, 0x56), new Color(0x32, 0xBA, 0x56));
 
     @Override
     public void preProcess(String documentUri, Editor editor) {

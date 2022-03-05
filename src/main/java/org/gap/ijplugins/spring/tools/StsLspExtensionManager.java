@@ -61,9 +61,9 @@ import static org.gap.ijplugins.spring.tools.ApplicationUtils.runReadAction;
 public class StsLspExtensionManager implements LSPExtensionManager {
 
     private static final Predicate<? super VirtualFile> SPRING_PREDICATE =
-            (f) -> f.getPath().contains("spring-core") || f.getPath().contains("spring-boot");
+            f -> f.getPath().contains("spring-core") || f.getPath().contains("spring-boot");
 
-    private StsLanguageValidator stsLanguageValidator = new StsLanguageValidator();
+    private final StsLanguageValidator stsLanguageValidator = new StsLanguageValidator();
 
     @Override
     public <T extends DefaultRequestManager> T getExtendedRequestManagerFor(
@@ -86,7 +86,7 @@ public class StsLspExtensionManager implements LSPExtensionManager {
 
     @Override
     public LanguageClient getExtendedClientFor(ClientContext clientContext) {
-        return new org.gap.ijplugins.spring.tools.StsLanuageClient(clientContext);
+        return new StsLanguageClient(clientContext);
     }
 
     @Override

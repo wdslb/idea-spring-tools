@@ -13,7 +13,8 @@ group = "org.gap.ijplugins.spring.ideaspringtools"
 
 repositories {
     mavenCentral()
-    maven ("https://repo.huaweicloud.com/repository/maven" )
+    maven ("https://maven-central.storage-download.googleapis.com/maven2/")
+    maven ("https://repo.huaweicloud.com/repository/maven/" )
     maven ("http://mirrors.cloud.tencent.com/nexus/repository/maven-public/")
 //    mavenLocal()
     maven ("https://jitpack.io")
@@ -37,9 +38,9 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version.set("IC-2021.2")
+    version.set("IC-2021.3")
     pluginName.set("idea-spring-tools")
-    downloadSources.set(false)
+    downloadSources.set(true)
     updateSinceUntilBuild.set(true)
     plugins.set(listOf("IntelliLang","java"))
 }
@@ -49,6 +50,7 @@ tasks {
         sourceCompatibility = "11"
         targetCompatibility = "11"
         options.encoding = StandardCharsets.UTF_8.name()
+        options.isDeprecation = true
     }
     compileKotlin {
         kotlinOptions.jvmTarget = "11"

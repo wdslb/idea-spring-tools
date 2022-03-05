@@ -37,7 +37,7 @@ import java.util.Collection;
 
 public class InlayHighlightProcessor implements HighlightProcessor {
 
-    private Multimap<String, Inlay<HintRenderer>> inlays = ArrayListMultimap.create();
+    private final Multimap<String, Inlay<HintRenderer>> inlays = ArrayListMultimap.create();
 
     @Override
     public void preProcess(String documentUri, Editor editor) {

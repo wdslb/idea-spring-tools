@@ -27,7 +27,7 @@ package org.gap.ijplugins.spring.tools;
 import org.jetbrains.annotations.NotNull;
 
 public final class ResourceBundle {
-    private static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("messages");
+    private static final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("messages");
 
     private ResourceBundle() {
 

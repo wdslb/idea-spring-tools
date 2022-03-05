@@ -27,9 +27,9 @@ package org.gap.ijplugins.spring.tools.livedata;
 import java.util.Map;
 
 public class ProcessCommandInfo {
-    private String processKey;
-    private String label;
-    private String action;
+    private final String processKey;
+    private final String label;
+    private final String action;
 
     public ProcessCommandInfo(Map<String, String> map) {
         processKey = map.get("processKey");

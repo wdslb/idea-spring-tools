@@ -72,8 +72,8 @@ import java.util.stream.Collectors;
 public class TypeProvider {
     private static final Logger log = Logger.getInstance(TypeProvider.class);
 
-    private static Map<Class, Function<JvmAnnotationAttributeValue, Object>> attributeValueMappings = new HashMap<>();
-    private static Map<JvmPrimitiveTypeKind, JavaTypeKind> primitiveKindMapping = new HashMap<>();
+    private static final Map<Class, Function<JvmAnnotationAttributeValue, Object>> attributeValueMappings = new HashMap<>();
+    private static final Map<JvmPrimitiveTypeKind, JavaTypeKind> primitiveKindMapping = new HashMap<>();
 
     static {
         attributeValueMappings.put(JvmAnnotationConstantValue.class,

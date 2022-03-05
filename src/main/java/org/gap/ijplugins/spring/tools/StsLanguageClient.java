@@ -57,7 +57,6 @@ import org.gap.ijplugins.spring.tools.java.TypeDescriptorProvider;
 import org.gap.ijplugins.spring.tools.java.TypeProvider;
 import org.springframework.ide.vscode.commons.protocol.CursorMovement;
 import org.springframework.ide.vscode.commons.protocol.HighlightParams;
-import org.springframework.ide.vscode.commons.protocol.ProgressParams;
 import org.springframework.ide.vscode.commons.protocol.STS4LanguageClient;
 import org.springframework.ide.vscode.commons.protocol.java.ClasspathListenerParams;
 import org.springframework.ide.vscode.commons.protocol.java.JavaCodeCompleteData;
@@ -84,21 +83,21 @@ import java.util.stream.Collectors;
 
 import static org.gap.ijplugins.spring.tools.ApplicationUtils.runReadAction;
 
-class StsLanuageClient extends DefaultLanguageClient implements STS4LanguageClient {
+class StsLanguageClient extends DefaultLanguageClient implements STS4LanguageClient {
 
-    private static final Logger LOGGER = Logger.getInstance(StsLanuageClient.class);
+    private static final Logger LOGGER = Logger.getInstance(StsLanguageClient.class);
 
-    private List<HighlightProcessor> processors;
+    private final List<HighlightProcessor> processors;
 
-    private Map<String, ClasspathListener> classpathListenerMap = new HashMap<>();
+    private final Map<String, ClasspathListener> classpathListenerMap = new HashMap<>();
 
-    private TypeProvider typeProvider;
+    private final TypeProvider typeProvider;
 
-    private TypeDescriptorProvider typeDescriptorProvider;
+    private final TypeDescriptorProvider typeDescriptorProvider;
 
-    private PsiResolver psiResolver;
+    private final PsiResolver psiResolver;
 
-    public StsLanuageClient(ClientContext clientContext) {
+    public StsLanguageClient(ClientContext clientContext) {
         super(clientContext);
         processors = ImmutableList.of(new RangeHighlightProcessor(), new InlayHighlightProcessor());
         typeProvider = new TypeProvider(clientContext.getProject());
@@ -132,11 +131,6 @@ class StsLanuageClient extends DefaultLanguageClient implements STS4LanguageClie
         ApplicationManager.getApplication()
                 .invokeLater(
                         () -> processHighlights(params, documentUri, editorEventManager.editor, document));
-    }
-
-    @Override
-    public void progress(ProgressParams progressEvent) {
-
     }
 
     @Override

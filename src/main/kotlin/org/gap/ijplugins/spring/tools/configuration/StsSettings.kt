@@ -25,5 +25,5 @@
 package org.gap.ijplugins.spring.tools.configuration
 
 class StsSettings {
-    var jvmArgs: String = "-Xmx512m"
+    var jvmArgs: String = "-Xmx1g"
 }

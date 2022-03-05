@@ -44,10 +44,10 @@ public final class StsServiceDefinitionBuilder {
     private static final Logger LOGGER = Logger.getInstance(StsServiceDefinitionBuilder.class);
     public static final String LAUNCHER = "org.springframework.boot.loader.JarLauncher";
 
-    private String extensions;
+    private final String extensions;
     private String langId;
     private boolean serverListenerEnabled = false;
-    private Map<String, String> langIds = new HashMap<>();
+    private final Map<String, String> langIds = new HashMap<>();
     private boolean debug = false;
 
     private StsServiceDefinitionBuilder(String extensions) {
@@ -82,7 +82,7 @@ public final class StsServiceDefinitionBuilder {
             final File root = Arrays.stream(PluginManagerCore.getPlugins())
                     .filter(d -> PluginId.getId("org.gap.ijplugins.spring.idea-spring-tools").equals(d.getPluginId()))
                     .findFirst()
-                    .map(d -> d.getPath())
+                    .map(d -> d.getPluginPath().toFile())
                     .orElseThrow(() -> new IllegalStateException("PluginDescriptor for org.gap.ijplugins.spring.idea-spring-tools not found."));
             final Path javaHomePath = Paths.get(javaHome);
 

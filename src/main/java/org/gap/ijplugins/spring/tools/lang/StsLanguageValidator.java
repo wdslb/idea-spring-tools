@@ -29,9 +29,9 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.gap.ijplugins.spring.tools.util.Throwables;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
@@ -43,16 +43,16 @@ public class StsLanguageValidator {
 
     private static final Logger LOGGER = Logger.getInstance(StsLanguageValidator.class);
 
-    @Nullable
     public boolean isXmlSpringBeanFile(@NotNull VirtualFile virtualFile, @NotNull Project project) {
-        if ("xml".equals(virtualFile.getExtension())) {
+        if ("xml".equalsIgnoreCase(virtualFile.getExtension())) {
             XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+            inputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
             XMLStreamReader xmlStreamReader = null;
             try (InputStream inputStream = virtualFile.getInputStream()) {
                 xmlStreamReader = inputFactory.createXMLStreamReader(inputStream);
                 while (xmlStreamReader.hasNext()) {
                     int elementType = xmlStreamReader.next();
-                    if (elementType == XMLStreamReader.START_ELEMENT) {
+                    if (elementType == XMLStreamConstants.START_ELEMENT) {
                         if (NS.equals(xmlStreamReader.getNamespaceURI())) {
                             return true;
                         }
@@ -63,7 +63,7 @@ public class StsLanguageValidator {
                 LOGGER.warn("Failed to process xml file", e);
             } finally {
                 Optional.ofNullable(xmlStreamReader)
-                        .ifPresent(Throwables.fromThrowable((r) -> r.close(), LOGGER::warn));
+                        .ifPresent(Throwables.fromThrowable(XMLStreamReader::close, LOGGER::warn));
             }
         }
         return false;

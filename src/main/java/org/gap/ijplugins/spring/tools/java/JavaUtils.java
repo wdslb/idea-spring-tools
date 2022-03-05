@@ -36,7 +36,7 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class JavaUtils {
-    private static Logger log = Logger.getInstance(JavaUtils.class);
+    private static final Logger LOGGER = Logger.getInstance(JavaUtils.class);
 
     public JavaUtils() {
     }
@@ -55,7 +55,7 @@ public class JavaUtils {
                         return Stream.of(rtPath);
                     }
 
-                    log.error("Cannot find file " + rtPath);
+                    LOGGER.error("Cannot find file " + rtPath);
                 }
             } else {
                 javaHome = (String)bootClasspathSupplier.get();
@@ -68,7 +68,7 @@ public class JavaUtils {
                 }
             }
         } catch (NumberFormatException var7) {
-            log.error("Cannot extract java minor version number.", var7);
+            LOGGER.error("Cannot extract java minor version number.", var7);
         }
 
         return Stream.empty();
@@ -76,11 +76,11 @@ public class JavaUtils {
 
     public static String getJavaRuntimeMinorVersion(String fullVersion) {
         String[] tokenized = fullVersion.split("\\.");
-        if (tokenized[0] == "1") {
+        if ("1".equals(tokenized[0])) {
             if (tokenized.length > 1) {
                 return tokenized[1];
             } else {
-                log.error("Cannot determine minor version for the Java Runtime Version: " + fullVersion);
+                LOGGER.error("Cannot determine minor version for the Java Runtime Version: " + fullVersion);
                 return null;
             }
         } else {

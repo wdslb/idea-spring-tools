@@ -32,7 +32,7 @@ import java.util.List;
 
 public class ClasspathArgument {
     private String projectURI;
-    private String projectName;
+    private final String projectName;
     private boolean deleted = false;
     private Classpath classpath;
 

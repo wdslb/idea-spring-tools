@@ -31,10 +31,13 @@ import com.intellij.openapi.util.IconLoader;
 import javax.swing.*;
 
 public final class StsIcons {
+    @SuppressWarnings("deprecation")
     private static final Supplier<Icon> bootIcon = Suppliers.memoize(() -> IconLoader.getIcon("/icons/boot-icon.png"));
 
+    @SuppressWarnings("deprecation")
     private static final Supplier<Icon> beanIcon = Suppliers.memoize(() -> IconLoader.getIcon("/icons/spring-bean.svg"));
 
+    @SuppressWarnings("deprecation")
     private static final Supplier<Icon> requestMappingIcon = Suppliers.memoize(() -> IconLoader.getIcon("/icons/spring-request-mapping.svg"));
 
     private StsIcons() {

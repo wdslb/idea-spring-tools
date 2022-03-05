@@ -36,7 +36,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class ManageProcessConnectionsAction extends AnAction {
-    private StsApplicationManager manager = new StsApplicationManager();
+    private final StsApplicationManager manager = new StsApplicationManager();
 
 
     public ManageProcessConnectionsAction() {

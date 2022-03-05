@@ -35,7 +35,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.Tuple;
 import java.util.Arrays;
 
 public class PsiResolver {
-    private Project project;
+    private final Project project;
 
     public PsiResolver(Project project) {
         this.project = project;
