@@ -29,15 +29,15 @@ dependencies {
     //implementation("com.github.ballerina-platform:lsp4intellij:0.94.2")
     //implementation("com.github.ballerina-platform:lsp4intellij:0.94.1-20201108.10.09.08.085")
 
-    implementation("org.springframework.ide.vscode:commons-java:1.29.0-SNAPSHOT")
-    languageServer("org.springframework.ide.vscode:spring-boot-language-server:1.29.0-SNAPSHOT:exec") {
+    implementation("org.springframework.ide.vscode:commons-java:1.32.0-SNAPSHOT")
+    languageServer("org.springframework.ide.vscode:spring-boot-language-server:1.32.0-SNAPSHOT:exec") {
         isTransitive = false
     }
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version.set("IC-2020.3")
+    version.set("IC-2021.2")
     pluginName.set("idea-spring-tools")
     downloadSources.set(false)
     updateSinceUntilBuild.set(true)
@@ -94,7 +94,7 @@ tasks {
                 <?xml version="1.0" encoding="UTF-8"?>
                 <plugins>
                     <plugin id="org.gap.ijplugins.spring.idea-spring-tools" version="$archiveVersion">
-                        <idea-version since-build="191.8026.42" until-build="213.*" />
+                        <idea-version since-build="191.8026.42" until-build="213.6777.52" />
                     </plugin>
                 </plugins>                
                 
@@ -115,6 +115,6 @@ release {
 tasks {
 
     runIde {
-        setJvmArgs(listOf("-Dsts4.jvmargs=-Xmx512m -Xms512m"))
+        setJvmArgs(listOf("-Dboot.ls.custom.vmargs=-Xmx1g -Xms512m -Dsts4.jvmargs=-Xmx1g -Xms512m"))
     }
 }
