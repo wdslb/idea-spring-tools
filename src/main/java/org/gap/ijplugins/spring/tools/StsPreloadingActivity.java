@@ -28,7 +28,10 @@ import com.google.common.base.Strings;
 import com.intellij.openapi.application.PreloadingActivity;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
+import kotlin.Unit;
+import kotlin.coroutines.Continuation;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.wso2.lsp4intellij.IntellijLanguageClient;
 import org.wso2.lsp4intellij.requests.Timeouts;
 
@@ -51,7 +54,7 @@ public class StsPreloadingActivity extends PreloadingActivity {
     private static final String PTRN_APPLICATION_PROPERTIES = "application.*\\.properties";
 
     @Override
-    public void preload(@NotNull ProgressIndicator progressIndicator) {
+    public void preload() {
         if (Strings.isNullOrEmpty(System.getProperty(EXT_PTRN_JAVA + ".home"))) {
             LOGGER.error("No java home found in system properties");
             return;
@@ -83,5 +86,12 @@ public class StsPreloadingActivity extends PreloadingActivity {
 
         StsLspExtensionManager extensionManager = new StsLspExtensionManager();
         extensions.forEach(e -> IntellijLanguageClient.addExtensionManager(e, extensionManager));
+        return;
+    }
+
+    @Override
+    public void preload(@Nullable ProgressIndicator indicator) {
+        // backward compatibility
+        this.preload();
     }
 }

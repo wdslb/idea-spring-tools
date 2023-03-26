@@ -111,7 +111,6 @@ class StsLanguageClient extends DefaultLanguageClient implements STS4LanguageCli
                 .forEach(l -> processors.forEach(p -> p.process(documentUri, l, editor)));
     }
 
-
     @Override
     public void highlight(HighlightParams params) {
         LOGGER.debug("Processing highligh notification for document uri :",
@@ -131,6 +130,11 @@ class StsLanguageClient extends DefaultLanguageClient implements STS4LanguageCli
         ApplicationManager.getApplication()
                 .invokeLater(
                         () -> processHighlights(params, documentUri, editorEventManager.editor, document));
+    }
+
+    @Override
+    public void progress(ProgressParams progressEvent) {
+
     }
 
     @Override

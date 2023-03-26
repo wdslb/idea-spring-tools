@@ -1,11 +1,16 @@
 import org.jetbrains.intellij.tasks.PatchPluginXmlTask
 import org.jetbrains.intellij.tasks.PrepareSandboxTask
+import org.jetbrains.intellij.tasks.RunIdeTask
+
+import java.io.ByteArrayOutputStream
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileSystems
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 plugins {
-    kotlin("jvm") version "1.4.32"
-    id("org.jetbrains.intellij") version "1.0"
+    id("org.jetbrains.intellij") version "1.12.0"
+    kotlin("jvm") version "1.7.22"
     id("net.researchgate.release") version "2.8.1"
 }
 
@@ -13,36 +18,32 @@ group = "org.gap.ijplugins.spring.ideaspringtools"
 
 repositories {
     mavenCentral()
-    maven ("https://maven-central.storage-download.googleapis.com/maven2/")
     maven ("https://repo.huaweicloud.com/repository/maven/" )
-    maven ("http://mirrors.cloud.tencent.com/nexus/repository/maven-public/")
-//    mavenLocal()
+    maven ("https://mirrors.cloud.tencent.com/nexus/repository/maven-public/")
     maven ("https://jitpack.io")
-    // maven ("https://dl.bintray.com/gayanper/maven")
-    maven ("https://repo.spring.io/libs-snapshot/")
+    maven ("https://repo.spring.io/artifactory/libs-snapshot-local/")
 }
 
 val languageServer by configurations.creating
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("com.github.ballerina-platform:lsp4intellij:master-SNAPSHOT")
     //implementation("com.github.ballerina-platform:lsp4intellij:0.94.2")
-    //implementation("com.github.ballerina-platform:lsp4intellij:0.94.1-20201108.10.09.08.085")
+    implementation(project(":lsp4intellij"))
 
-    implementation("org.springframework.ide.vscode:commons-java:1.32.0-SNAPSHOT")
-    languageServer("org.springframework.ide.vscode:spring-boot-language-server:1.32.0-SNAPSHOT:exec") {
+    implementation("org.springframework.ide.vscode:commons-java:1.40.0-SNAPSHOT")
+    languageServer("org.springframework.ide.vscode:spring-boot-language-server:1.40.0-SNAPSHOT:exec") {
         isTransitive = false
     }
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version.set("IC-2021.3")
+    version.set("222-EAP-SNAPSHOT")
+    type.set("IC")
     pluginName.set("idea-spring-tools")
-    downloadSources.set(true)
+    plugins.set(listOf("java"))
     updateSinceUntilBuild.set(true)
-    plugins.set(listOf("IntelliLang","java"))
 }
 
 tasks {
@@ -59,22 +60,17 @@ tasks {
         kotlinOptions.jvmTarget = "11"
     }
 }
-
-tasks.buildSearchableOptions {
-    enabled = false
-}
-
 tasks.getByName<PatchPluginXmlTask>("patchPluginXml") {
-    sinceBuild.set("191.*")
-    untilBuild.set("213.*")
+    untilBuild.set("223.*")
+    sinceBuild.set("221.*")
 }
 
 tasks.getByName<PrepareSandboxTask>("prepareSandbox").doLast {
-    val pluginServerDir = intellij.sandboxDir.get() +
+    val pluginServerDir = "${intellij.sandboxDir.get()} +" +
             FileSystems.getDefault().separator +
             "plugins" +
             FileSystems.getDefault().separator +
-            intellij.pluginName.get() +
+            "${intellij.pluginName.get()}" +
             FileSystems.getDefault().separator +
             "lib" +
             FileSystems.getDefault().separator +
@@ -95,14 +91,20 @@ tasks {
             val content = """
                 <?xml version="1.0" encoding="UTF-8"?>
                 <plugins>
-                    <plugin id="org.gap.ijplugins.spring.idea-spring-tools" version="$archiveVersion">
-                        <idea-version since-build="191.8026.42" until-build="213.6777.52" />
+                    <plugin id="org.gap.ijplugins.spring.idea-spring-tools" url="https://dl.bintray.com/gayanper/idea-spring-tools/${intellij.pluginName}-${version}.zip"
+                        version="${version}">
+                        <idea-version since-build="221.5080.210" until-build="223.*" />
                     </plugin>
                 </plugins>                
                 
             """.trimIndent()
             file("build/distributions/updatePlugins.xml").writeText(content)
         }
+    }
+
+    runIde {
+        setJvmArgs(listOf("-Dsts4.jvmargs=-Xmx512m -Xms512m"))
+        jbrVersion.set("17.0.3b469.37")
     }
 }
 
@@ -112,11 +114,4 @@ release {
     failOnSnapshotDependencies = false
     tagTemplate = "$version"
     buildTasks = arrayListOf("buildPlugin")
-}
-
-tasks {
-
-    runIde {
-        setJvmArgs(listOf("-Dboot.ls.custom.vmargs=-Xmx1g -Xms512m -Dsts4.jvmargs=-Xmx1g -Xms512m"))
-    }
 }
